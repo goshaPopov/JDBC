@@ -50,9 +50,14 @@ public class CategoryDAOImpl implements CategoryDAO{
                 list.add(cate);
             }
             
+            rs.close();
+            stmt.close();
+            con.commit();
+            
         } catch (SQLException ex) {
             Logger.getLogger(CategoryDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
         return list;
     }
     
@@ -92,6 +97,7 @@ public class CategoryDAOImpl implements CategoryDAO{
                 categ.setName(rs.getString(2));
             }
             
+            rs.close();
             stmt.close();
             con.commit();
             
@@ -106,14 +112,13 @@ public class CategoryDAOImpl implements CategoryDAO{
     @Override
     public void update(Category t) {
         PreparedStatement stmt = null;
-        ResultSet rs = null;
         String sql = "UPDATE category SET name=? WHERE id=?";
         try{
             stmt = con.prepareStatement(sql);
             stmt.setString(1,t.getName());
             stmt.setLong(2, t.getId());
             stmt.execute();
-            
+                
             stmt.close();
             con.commit();
         } catch (SQLException ex){
@@ -124,7 +129,6 @@ public class CategoryDAOImpl implements CategoryDAO{
     @Override
     public void delete(Long id) {
         PreparedStatement stmt = null;
-        ResultSet rs = null;
         String sql = "DELETE FROM category WHERE id=?";
         try{
             stmt = con.prepareCall(sql);
